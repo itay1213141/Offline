@@ -15,12 +15,12 @@ fi
 # Function to save image as tar.gz
 save_image() {
   local full_image_name="$1"
-  local image_name=$(basename "$full_image_name" | cut -d':' -f1) 
+  local image_name=$(basename "$full_image_name" | sed 's/:/-/g' ) 
 
   # Create output directory if it doesn't exist
-  mkdir -p "${2:-OUTPUT_DIR}"
+  mkdir -p "${2:-$OUTPUT_DIR}"
   
-  local file_path="${2:-OUTPUT_DIR}/$image_name.tar.gz"
+  local file_path="${2:-$OUTPUT_DIR}/$image_name.tar.gz"
 
   # Pull the image, gzip, and save as tar.gz
   docker pull "$full_image_name"
