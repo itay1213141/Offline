@@ -23,7 +23,7 @@ save_image() {
   local file_path="${2:-$OUTPUT_DIR}/$image_name.tar.gz"
 
   # Pull the image, gzip, and save as tar.gz
-  docker pull "$full_image_name"
+  docker pull "$full_image_name" 2>/dev/null || (echo "Couldn't pull image, checking if it's available locally" && docker image inspect "$full_image_name" >/dev/null 2>&1) || { echo "Failed to find image $full_image_name"; exit 1; }
 
   echo Saving image $(basename $full_image_name)
   docker save "$full_image_name" | gzip > "$file_path"
